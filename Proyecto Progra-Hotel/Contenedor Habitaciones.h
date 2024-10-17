@@ -1,0 +1,406 @@
+#pragma once
+#include "Librerias.h"
+#include "Habitacion.h"
+
+class ContenedorHabitaciones
+{
+private:
+	vector<Habitacion> ListaHabitaciones;
+
+public:
+
+	void AgregarHabitacion()
+	{
+        int numHabitacion, piso, cantPersonas;
+        double precioXnoche;
+        string descripcion;
+
+        cout << "Ingrese el numero de habitacion: ";
+        while (!(cin >> numHabitacion) || numHabitacion < 1) {
+            cout << "Ingrese nuevamente: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        cout << "Ingrese el piso: ";
+        while (!(cin >> piso) || piso < 1) {
+            cout << " Ingrese nuevamente: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        cout << "Ingrese la descripcion: ";
+        cin.ignore(); // Limpiar el buffer
+        getline(cin, descripcion);
+        while (descripcion.empty()) {
+            cout << "Ingrese nuevamente: ";
+            getline(cin, descripcion);
+        }
+
+        cout << "Ingrese la cantidad de personas: ";
+        while (!(cin >> cantPersonas) || cantPersonas < 1) {
+            cout << "Ingrese nuevamente: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+        cout << "Ingrese el precio por noche: ";
+        while (!(cin >> precioXnoche) || precioXnoche < 1) {
+            cout << "Ingrese nuevamente: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+
+        if (!verificarHabitacion(numHabitacion))
+        {
+			system("cls");
+            Habitacion nuevaHabitacion(numHabitacion, piso, descripcion, cantPersonas, precioXnoche);
+            ListaHabitaciones.push_back(nuevaHabitacion);
+			cout << "---------------------------------------------------" << endl;
+			cout << "Habitacion registrada con exito !!!" << endl;
+            cout << "---------------------------------------------------" << endl;
+        }
+        else
+        {
+			system("cls");
+            cout << "---------------------------------------------------" << endl;
+            cout << "La habitacion ya existe !!!!" << endl;
+            cout << "---------------------------------------------------" << endl;
+        }
+
+        // Mostrar la lista de habitaciones después de registrar una nueva
+        for (int i = 0; i < ListaHabitaciones.size(); i++)
+        {
+            ListaHabitaciones[i].getDatosHabitacion();
+
+        }
+    }
+	
+
+	bool verificarHabitacion(int numHabitacion)
+	{
+		for (int i = 0; i < ListaHabitaciones.size(); i++)
+		{
+			if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+    void actualizarHabitacion(int numHabitacion)
+    {
+
+        int piso;
+        string descripcion;
+        int cantPersonas;
+        double precioXnoche;
+
+        if (ListaHabitaciones.empty())
+        {
+            cout << "--------------------------------------------" << endl;
+			cout << " No hay Habitaciones Registradas" << endl;
+			cout << "--------------------------------------------" << endl;
+        }
+        else
+        {
+            for (int i = 0; i < ListaHabitaciones.size(); i++)
+            {
+                if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion)
+                {
+
+                    cout << "Ingrese el piso: ";
+                    while (!(cin >> piso) || piso < 1) {
+                        cout << " Ingrese nuevamente: ";
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    }
+
+                    cout << "Ingrese la descripcion: ";
+                    cin.ignore(); // Limpiar el buffer
+                    getline(cin, descripcion);
+                    while (descripcion.empty()) {
+                        cout << "Ingrese nuevamente: ";
+                        getline(cin, descripcion);
+                    }
+
+                    cout << "Ingrese la cantidad de personas: ";
+                    while (!(cin >> cantPersonas) || cantPersonas < 1) {
+                        cout << "Ingrese nuevamente: ";
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    }
+
+                    cout << "Ingrese el precio por noche: ";
+                    while (!(cin >> precioXnoche) || precioXnoche < 1) {
+                        cout << "Ingrese nuevamente: ";
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    }
+                    ListaHabitaciones[i].setActualizarHabitacion(piso, descripcion, cantPersonas, precioXnoche);
+					cout << "---------------------------------------------------" << endl;
+					cout << "Habitacion actualizada con exito!!!" << endl;
+					cout << "---------------------------------------------------" << endl;
+				}
+            
+           
+            }
+
+        }
+        for (int i = 0; i < ListaHabitaciones.size(); i++)
+        {
+			ListaHabitaciones[i].getDatosHabitacion();
+
+        }
+
+
+    }
+
+	void MostrarHabitaciones()
+	{
+		system("cls");
+        if (ListaHabitaciones.empty())
+        {
+            cout << "--------------------------------------------" << endl;
+			cout << " No hay Habitaciones Registradas" << endl;
+            cout << "--------------------------------------------" << endl;
+        }
+        else
+        {
+            int totalHabitaciones = ListaHabitaciones.size();
+            int totalHabitacionesDisponibles = 0;
+
+            cout << "------------|  Lista Habitaciones  |------------" << endl;
+            for (int i = 0; i < ListaHabitaciones.size(); i++)
+            {
+
+                ListaHabitaciones[i].getDatosHabitacion();
+
+                if (ListaHabitaciones[i].getEstado())
+                {
+                    totalHabitacionesDisponibles++;
+                }
+                
+            }
+            cout << "--------------------------------------------" << endl;
+            cout << "Total de habitaciones: " << totalHabitaciones << endl;
+            cout << "Total de habitaciones disponibles: " << totalHabitacionesDisponibles << endl;
+            cout << "--------------------------------------------" << endl;
+        }
+
+	}
+
+    void guardarContenedor() const 
+{
+        if (ListaHabitaciones.empty())
+        {
+			cout << "--------------------------------------------" << endl;
+			cout << "No hay Habitaciones Registradas" << endl;
+			cout << "--------------------------------------------" << endl;
+		}
+        else
+        {
+            ofstream archivo("Habitaciones.txt");
+
+            if (archivo.is_open()) {
+                for (int i = 0; i < ListaHabitaciones.size(); i++) {
+                    archivo << ListaHabitaciones[i].getNumeroHabitacion()
+                        << "-" << ListaHabitaciones[i].getPiso()
+                        << "-" << ListaHabitaciones[i].getDescripcion()
+                        << "-" << ListaHabitaciones[i].getCantidadPersonas()
+                        << "-" << ListaHabitaciones[i].getEstado()
+                        << endl;
+                }
+                archivo.close();
+                cout << "----------------------------------------------------------------" << endl;
+                cout << "Lista de Habitaciones almacenados en el archivo correctamente..." << endl;
+                cout << "----------------------------------------------------------------" << endl;
+            }
+        }
+    }
+
+    void RecuperarDatos()
+    {
+        if (ListaHabitaciones.empty())
+        {
+            cout << "--------------------------------------------" << endl;
+            cout << "No hay Habitaciones Registradas" << endl;
+            cout << "--------------------------------------------" << endl;
+        }
+        else
+        {
+            ListaHabitaciones.clear();
+
+            ifstream archivo("Habitaciones.txt");
+            if (archivo.is_open())
+            {
+
+                string linea;
+                while (getline(archivo, linea))
+                {
+                    stringstream ss(linea);
+                    string numHabitacion, piso, descripcion, cantPersonas, estado;
+
+                    getline(ss, numHabitacion, '-');
+
+                    getline(ss, piso, '-');
+
+                    getline(ss, descripcion, '-');
+
+                    getline(ss, cantPersonas, '-');
+
+                    getline(ss, estado, '-');
+
+                    Habitacion nuevaHabitacion(stoi(numHabitacion), stoi(piso), descripcion, stoi(cantPersonas), stod(estado));
+                    ListaHabitaciones.push_back(nuevaHabitacion);
+                }
+                archivo.close();
+                cout << "----------------------------------------------------------------" << endl;
+                cout << "Lista de Habitaciones cargados desde el archivo correctamente..." << endl;
+                cout << "----------------------------------------------------------------" << endl;
+
+            }
+        }
+    }
+
+    void consultarHabitacion()
+    {
+
+        int numHabitacion;
+		cout << "Ingrese el numero de habitacion: ";
+		while (!(cin >> numHabitacion) || numHabitacion < 1) {
+			cout << "Ingrese nuevamente: ";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+
+        if (ListaHabitaciones.empty())
+        {
+            cout << "--------------------------------------------" << endl;
+            cout << " No hay Habitaciones Registradas" << endl;
+            cout << "--------------------------------------------" << endl;
+            return;
+
+        }
+		else
+		{
+			for (int i = 0; i < ListaHabitaciones.size(); i++)
+			{
+				if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion)
+				{
+					
+					ListaHabitaciones[i].getDatosHabitacion();
+					
+					return;
+				}
+			}
+			cout << "--------------------------------------------" << endl;
+			cout << "La habitacion no existe !!!" << endl;
+			cout << "--------------------------------------------" << endl;
+		}
+    }
+
+
+
+	//menu de habitaciones
+
+    void menuHabitaciones()
+    {
+        char opcion;
+
+        do
+        {
+            system("cls");
+            cout << "*********| Menu Habitaciones |**********" << endl;
+            cout << "* 1- Registrar una habitación          *" << endl;
+            cout << "* 2- Modificar una habitación          *" << endl;
+            cout << "* 3- Consultar todas los Habitaciones  *" << endl;
+            cout << "* 4- Guardar contenedor en archivo     *" << endl;
+            cout << "* 5- Recuperar datos del archivo       *" << endl;
+            cout << "* 6- Consultar estado de habitación    *" << endl;
+			cout << "* 7- Regresar a menú principal         *" << endl;
+            cout << "****************************************" << endl;
+            cout << "Ingrese una opcion: ";
+            cin >> opcion;
+
+            switch (opcion)
+            {
+            case '1':
+            {
+				system("cls");
+				AgregarHabitacion();
+
+                system("pause");
+                break;
+            }
+            case '2':
+            {
+				system("cls");
+
+				int numHabitacion;
+				cout << "Ingrese el numero de habitacion a modificar: ";
+				while (!(cin >> numHabitacion) || numHabitacion < 1) {
+					cout << "Ingrese nuevamente: ";
+					cin.clear();
+					cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				}
+				actualizarHabitacion(numHabitacion);
+
+                system("pause");
+                break;
+            }
+            case '3':
+            {
+				system("cls");
+				MostrarHabitaciones();
+
+                system("pause");
+                break;
+            }
+            case '4':
+            {
+
+				system("cls");
+				guardarContenedor();
+
+                system("pause");
+                break;
+            }
+            case '5':
+            {
+				system("cls");
+				RecuperarDatos();
+                system("pause");
+                break;
+            }
+            case '6':
+            {
+				system("cls");
+				consultarHabitacion();
+
+                system("pause");
+                break;
+            }
+            case '7':
+            {
+				system("cls");
+                cout << "-----------------------------------" << endl;
+                cout << "Regresando al Menu principal......." << endl;
+				cout << "-----------------------------------" << endl;
+                break;
+            }
+            default:
+            {
+
+                cout << "Ingrese un valor valido !!" << endl;
+                break;
+            }
+
+            }
+        } while (opcion != '7');
+
+    }
+};
