@@ -131,11 +131,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Contenedor Habitaciones.h" />
+    <ClInclude Include="Contenedor Huespedes.h" />
     <ClInclude Include="Habitacion.h" />
+    <ClInclude Include="Huesped.h" />
     <ClInclude Include="Librerias.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Habitaciones.txt" />
+    <Text Include="Huespedes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #include "Librerias.h"
 #include "Contenedor Habitaciones.h"
+#include "Contenedor Huespedes.h"
 
 
 
@@ -9,7 +10,8 @@ int main()
 	system("color 0B");
 	
 	
-	ContenedorHabitaciones contenedor;
+	ContenedorHabitaciones contenedorHabitaciones;
+	ContenedorHuespedes contenedorHuespedes;
     char opcion;
 
     do
@@ -29,14 +31,15 @@ int main()
         {
         case '1':
         {
-			contenedor.menuHabitaciones();
+			contenedorHabitaciones.menuHabitaciones();
 
             system("pause");
             break;
         }
         case '2':
         {
-            cout << "   Pronto Estara disponible !!!!!" << endl;
+            /*cout << "   Pronto Estara disponible !!!!!" << endl;*/
+			contenedorHuespedes.menuHuespedes();
 
             system("pause");
             break;

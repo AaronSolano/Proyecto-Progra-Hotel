@@ -9,7 +9,7 @@ private:
 
 public:
 
-	void AgregarHabitacion()
+	void RegistrarHabitacion()
 	{
         int numHabitacion, piso, cantPersonas;
         double precioXnoche;
@@ -91,7 +91,7 @@ public:
 	}
 
 
-    void actualizarHabitacion(int numHabitacion)
+    void ModificarHabitacion(int numHabitacion)
     {
 
         int piso;
@@ -144,22 +144,26 @@ public:
 					cout << "---------------------------------------------------" << endl;
 					cout << "Habitacion actualizada con exito!!!" << endl;
 					cout << "---------------------------------------------------" << endl;
+					ListaHabitaciones[i].getDatosHabitacion();
+					break;
 				}
+                else
+                {
+                    cout << "--------------------------------------------" << endl;
+                    cout << "Huesped no encontrado" << endl;
+                    cout << "--------------------------------------------" << endl;
+                }
             
            
             }
 
         }
-        for (int i = 0; i < ListaHabitaciones.size(); i++)
-        {
-			ListaHabitaciones[i].getDatosHabitacion();
-
-        }
+        
 
 
     }
 
-	void MostrarHabitaciones()
+	void ConsultarHabitaciones()
 	{
 		system("cls");
         if (ListaHabitaciones.empty())
@@ -198,7 +202,7 @@ public:
         if (ListaHabitaciones.empty())
         {
 			cout << "--------------------------------------------" << endl;
-			cout << "No hay Habitaciones Registradas" << endl;
+			cout << "No hay Habitaciones Registradas !!!" << endl;
 			cout << "--------------------------------------------" << endl;
 		}
         else
@@ -224,49 +228,43 @@ public:
 
     void RecuperarDatos()
     {
-        if (ListaHabitaciones.empty())
-        {
-            cout << "--------------------------------------------" << endl;
-            cout << "No hay Habitaciones Registradas" << endl;
-            cout << "--------------------------------------------" << endl;
-        }
-        else
-        {
-            ListaHabitaciones.clear();
+       
+        ListaHabitaciones.clear();
 
-            ifstream archivo("Habitaciones.txt");
-            if (archivo.is_open())
-            {
+        ifstream archivo("Habitaciones.txt");
+       if (archivo.is_open())
+       {
 
-                string linea;
-                while (getline(archivo, linea))
-                {
-                    stringstream ss(linea);
-                    string numHabitacion, piso, descripcion, cantPersonas, estado;
+           string linea;
+           while (getline(archivo, linea))
+           {
+               stringstream ss(linea);
+               string numHabitacion, piso, descripcion, cantPersonas, estado;
 
-                    getline(ss, numHabitacion, '-');
+                getline(ss, numHabitacion, '-');
 
-                    getline(ss, piso, '-');
+                getline(ss, piso, '-');
 
-                    getline(ss, descripcion, '-');
+                getline(ss, descripcion, '-');
 
-                    getline(ss, cantPersonas, '-');
+                getline(ss, cantPersonas, '-');
 
-                    getline(ss, estado, '-');
+                getline(ss, estado, '-');
 
-                    Habitacion nuevaHabitacion(stoi(numHabitacion), stoi(piso), descripcion, stoi(cantPersonas), stod(estado));
-                    ListaHabitaciones.push_back(nuevaHabitacion);
-                }
-                archivo.close();
-                cout << "----------------------------------------------------------------" << endl;
-                cout << "Lista de Habitaciones cargados desde el archivo correctamente..." << endl;
-                cout << "----------------------------------------------------------------" << endl;
+                 Habitacion nuevaHabitacion(stoi(numHabitacion), stoi(piso), descripcion, stoi(cantPersonas), stod(estado));
 
-            }
-        }
+                 ListaHabitaciones.push_back(nuevaHabitacion);
+           }
+           archivo.close();
+           cout << "----------------------------------------------------------------" << endl;
+           cout << "Lista de Habitaciones cargados desde el archivo correctamente..." << endl;
+           cout << "----------------------------------------------------------------" << endl;
+
+       }
+        
     }
 
-    void consultarHabitacion()
+    void ConsultarEstadoHabitacion()
     {
 
         int numHabitacion;
@@ -331,7 +329,7 @@ public:
             case '1':
             {
 				system("cls");
-				AgregarHabitacion();
+				RegistrarHabitacion();
 
                 system("pause");
                 break;
@@ -347,7 +345,7 @@ public:
 					cin.clear();
 					cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				}
-				actualizarHabitacion(numHabitacion);
+				ModificarHabitacion(numHabitacion);
 
                 system("pause");
                 break;
@@ -355,7 +353,7 @@ public:
             case '3':
             {
 				system("cls");
-				MostrarHabitaciones();
+				ConsultarHabitaciones();
 
                 system("pause");
                 break;
@@ -379,7 +377,7 @@ public:
             case '6':
             {
 				system("cls");
-				consultarHabitacion();
+				ConsultarEstadoHabitacion();
 
                 system("pause");
                 break;
