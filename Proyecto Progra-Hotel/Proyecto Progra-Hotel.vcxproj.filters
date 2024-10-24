@@ -35,9 +35,13 @@
     <ClInclude Include="Contenedor Huespedes.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Check-in.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Habitaciones.txt" />
     <Text Include="Huespedes.txt" />
+    <Text Include="checkin.txt" />
   </ItemGroup>
 </Project>

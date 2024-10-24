@@ -11,6 +11,8 @@ public:
 
 	void RegistrarHabitacion()
 	{
+		RecuperarDatos(); // Recuperar datos del archivo antes de registrar una nueva habitación.
+
         int numHabitacion, piso, cantPersonas;
         double precioXnoche;
         string descripcion;
@@ -77,6 +79,28 @@ public:
         }
     }
 	
+    bool validarHabitacionReserva(int numHabit) //validar en el check in
+    {
+        bool sePuedeReservar = false;
+        for (int i = 0; i < ListaHabitaciones.size(); i++)
+        {
+			if (ListaHabitaciones[i].getNumeroHabitacion() == numHabit)
+			{
+                if (ListaHabitaciones[i].getEstado() == 1)
+                {
+                    cout << "La habitacion se encuentra disponible " << endl;
+                    sePuedeReservar = true;
+                }
+			}
+		}
+        if (!sePuedeReservar)
+        {
+			cout << "---------------------------------------------------" << endl;
+			cout << "La habitacion no se encuentra disponible o no existe!!! " << endl;
+			cout << "---------------------------------------------------" << endl;
+		}
+		return sePuedeReservar;
+    }
 
 	bool verificarHabitacion(int numHabitacion)
 	{

@@ -74,7 +74,10 @@ public:
 		return Estado;
 	}
 
-
+	void setEstado(bool _estado)
+	{
+		Estado = _estado;
+	}
 
 
 };

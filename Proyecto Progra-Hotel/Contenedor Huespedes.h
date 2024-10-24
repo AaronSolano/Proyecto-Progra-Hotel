@@ -10,6 +10,8 @@ private:
 public:
     void RegistrarHuesped()
     {
+		RecuperarContenedor(); // recolecta los datos guardados en el txt y los carga en la lista de huespedes antes de registrar uno nuevo.
+
         int Cedula;
         string Nombre;
         string Apellido;
@@ -78,6 +80,27 @@ public:
 
     }
 
+    bool validarHuesped(int idHuesped) //validar en el check in
+    {
+        bool existeHuesped = false;
+        for (int i = 0; i < ListaHuespedes.size(); i++)
+        {
+            if (ListaHuespedes[i].getCedula() == idHuesped)
+            {
+                cout << "---------------------------------------------------" << endl;
+                cout << "El huesped se encuentra registrado!!!" << endl;
+                cout << "---------------------------------------------------" << endl;
+                existeHuesped = true;
+            }
+        }
+        if (!existeHuesped)
+        {
+            cout << "---------------------------------------------------" << endl;
+            cout << "El huesped no se encuentra registrado o no existe!!! " << endl;
+            cout << "---------------------------------------------------" << endl;
+        }
+        return existeHuesped;
+    }
 
     bool verificarCedula(int _cedula)
     {

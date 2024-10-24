@@ -130,6 +130,7 @@
     <ClCompile Include="Proyecto Progra-Hotel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Check-in.h" />
     <ClInclude Include="Contenedor Habitaciones.h" />
     <ClInclude Include="Contenedor Huespedes.h" />
     <ClInclude Include="Habitacion.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="Librerias.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="checkin.txt" />
     <Text Include="Habitaciones.txt" />
     <Text Include="Huespedes.txt" />
   </ItemGroup>

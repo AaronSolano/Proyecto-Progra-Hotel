@@ -1,6 +1,7 @@
 #include "Librerias.h"
 #include "Contenedor Habitaciones.h"
 #include "Contenedor Huespedes.h"
+#include "Check-in.h"
 
 
 
@@ -12,6 +13,8 @@ int main()
 	
 	ContenedorHabitaciones contenedorHabitaciones;
 	ContenedorHuespedes contenedorHuespedes;
+	contenedorCheckIn checkin(contenedorHabitaciones, contenedorHuespedes);
+
     char opcion;
 
     do
@@ -40,14 +43,13 @@ int main()
         {
             /*cout << "   Pronto Estara disponible !!!!!" << endl;*/
 			contenedorHuespedes.menuHuespedes();
-
+         
             system("pause");
             break;
         }
         case '3':
         {
-            cout << "   Pronto Estara disponible !!!!!" << endl;
-
+            checkin.menucheckIn();
             system("pause");
             break;
         }
