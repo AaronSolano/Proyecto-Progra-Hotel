@@ -8,7 +8,7 @@
 int main()
 {
 	setlocale(LC_ALL, "spanish");
-	system("color 0B");
+	///*system("color 09");*/
 	
 	
 	ContenedorHabitaciones contenedorHabitaciones;
@@ -32,60 +32,61 @@ int main()
 
         switch (opcion)
         {
-        case '1':
-        {
-			contenedorHabitaciones.menuHabitaciones();
+            case '1':
+            {
+			    contenedorHabitaciones.menuHabitaciones();
 
-            system("pause");
-            break;
-        }
-        case '2':
-        {
-            /*cout << "   Pronto Estara disponible !!!!!" << endl;*/
-			contenedorHuespedes.menuHuespedes();
+                system("pause");
+                break;
+            }
+            case '2':
+            {
+               
+			    contenedorHuespedes.menuHuespedes();
          
-            system("pause");
-            break;
-        }
-        case '3':
-        {
-            checkin.menucheckIn();
-            system("pause");
-            break;
-        }
-        case '4':
-        {
-            cout << "   Pronto Estara disponible !!!!!" << endl;
+                system("pause");
+                break;
+            }
+            case '3':
+            {
+                checkin.menucheckIn();
 
-            system("pause");
-            break;
-        }
-        case '5':
-        {
+                system("pause");
+                break;
+            }
+            case '4':
+            {
+                cout << "   Pronto Estara disponible !!!!!" << endl;
+
+                system("pause");
+                break;
+            }
+            case '5':
+            {
 			
-			char confirmacion;
-			cout << "Desea salir del programa? (s/n): ";
-			cin >> confirmacion;
-			if (confirmacion == 's' || confirmacion == 'S')
-			{
-				system("cls");
-				cout << "------------------------------------------------" << endl;
-				cout << "Gracias por usar el programa, Vuelve Pronto !!! " << endl;
-				cout << "------------------------------------------------" << endl;
+			    char confirmacion;
+			    cout << "\033[1;33m Desea salir del programa? (s/n): \033[0m";
+			    cin >> confirmacion;
+			    if (confirmacion == 's' || confirmacion == 'S')
+			    {
+				    system("cls");
+				    cout << "\033[1;33m------------------------------------------------" << endl;
+				    cout << "Gracias por usar el programa, Vuelve Pronto !!! " << endl;
+				    cout << "------------------------------------------------\033[0m" << endl;
 				
-			}
-			else
-			{
-				opcion = '0';
-			}
+			    }
+			    else
+			    {
+				    opcion = '0';
+			    }
 
-            break;
-        }
-        default:
-        {
-            cout << "Ingrese un valor valido !!" << endl;
-            break;
-        }
+                break;
+            }
+            default:
+            {
+                cout << "Ingrese un valor valido !!" << endl;
+                break;
+            }
 
         }
     } while (opcion != '5');

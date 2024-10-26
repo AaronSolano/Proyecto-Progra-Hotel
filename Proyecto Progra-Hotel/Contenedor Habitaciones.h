@@ -17,20 +17,26 @@ public:
         double precioXnoche;
         string descripcion;
 
+        // ingresa el numero de la habitacion y verifica que no sea menor a 1. y sale del bucle cuando se
+        // cumple la condicion de ser mayor a uno.
         cout << "Ingrese el numero de habitacion: ";
         while (!(cin >> numHabitacion) || numHabitacion < 1) {
             cout << "Ingrese nuevamente: ";
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer 
         }
 
+        // ingresa el numero del piso donde se encuentra la habitacion y verifica que no sea menor a 1. y sale del bucle cuando se
+       // cumple la condicion de ser mayor a uno.
         cout << "Ingrese el piso: ";
         while (!(cin >> piso) || piso < 1) {
             cout << " Ingrese nuevamente: ";
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer
         }
 
+        // ingresa la descripcion y verifica que no este vacio. y sale del bucle cuando se
+       // cumple la condicion de no ser espacios vacios.
         cout << "Ingrese la descripcion: ";
         cin.ignore(); // Limpiar el buffer
         getline(cin, descripcion);
@@ -39,35 +45,39 @@ public:
             getline(cin, descripcion);
         }
 
+        // ingresa la cantidad de personas y verifica que no sea menor a 1. y sale del bucle cuando se
+       // cumple la condicion de ser mayor a uno.
         cout << "Ingrese la cantidad de personas: ";
         while (!(cin >> cantPersonas) || cantPersonas < 1) {
             cout << "Ingrese nuevamente: ";
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer
         }
 
+        // ingresa el precio de la habitacion x noche y verifica que no sea menor a 1. y sale del bucle cuando se
+       // cumple la condicion de ser mayor a uno.
         cout << "Ingrese el precio por noche: ";
         while (!(cin >> precioXnoche) || precioXnoche < 1) {
             cout << "Ingrese nuevamente: ";
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
+			cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer
+        } 
 
-
+		// Verificar si la habitación ya existe antes de registrarla
         if (!verificarHabitacion(numHabitacion))
         {
 			system("cls");
-            Habitacion nuevaHabitacion(numHabitacion, piso, descripcion, cantPersonas, precioXnoche);
-            ListaHabitaciones.push_back(nuevaHabitacion);
-			cout << "---------------------------------------------------" << endl;
-			cout << "Habitacion registrada con exito !!!" << endl;
+			Habitacion nuevaHabitacion(numHabitacion, piso, descripcion, cantPersonas, precioXnoche); // crea un objeto de tipo habitacion
+			ListaHabitaciones.push_back(nuevaHabitacion); // agrega la habitacion al vector de habitaciones
+            cout << "---------------------------------------------------" << endl;
+            cout << "\033[32mHabitacion registrada con exito !!!\033[0m" << endl;
             cout << "---------------------------------------------------" << endl;
         }
         else
         {
 			system("cls");
-            cout << "---------------------------------------------------" << endl;
-            cout << "La habitacion ya existe !!!!" << endl;
+            cout << "---------------------------------------------------" << endl;  
+            cout << "\033[31mLa habitacion ya existe !!!!\033[0m" << endl;
             cout << "---------------------------------------------------" << endl;
         }
 
@@ -79,39 +89,42 @@ public:
         }
     }
 	
-    bool validarHabitacionReserva(int numHabit) //validar en el check in
+	bool validarHabitacionReserva(int numHabit) //validar en el check in para saber si existe la habitacion y si esta disponible
     {
         bool sePuedeReservar = false;
         for (int i = 0; i < ListaHabitaciones.size(); i++)
         {
-			if (ListaHabitaciones[i].getNumeroHabitacion() == numHabit)
+			if (ListaHabitaciones[i].getNumeroHabitacion() == numHabit) // recorre el vector en busca del numero de habitacion 
 			{
-                if (ListaHabitaciones[i].getEstado() == 1)
+				if (ListaHabitaciones[i].getEstado() == 1)  // si la habitacion esta disponible es = true y muestra los datos de la habitacion
                 {
-                    cout << "La habitacion se encuentra disponible " << endl;
                     sePuedeReservar = true;
+                    cout << "\033[32m---------------------------------------------------" << endl;
+                    cout << "La habitacion se encuentra disponible " << endl;
+                    cout << "---------------------------------------------------\033[0m" << endl;
+                    
                 }
 			}
 		}
-        if (!sePuedeReservar)
+		if (!sePuedeReservar) // si no se puede reservar muestra un mensaje
         {
-			cout << "---------------------------------------------------" << endl;
-			cout << "La habitacion no se encuentra disponible o no existe!!! " << endl;
-			cout << "---------------------------------------------------" << endl;
+            cout << "\033[31m---------------------------------------------------" << endl;
+            cout << "La habitacion no se encuentra disponible!!! " << endl;
+            cout << "---------------------------------------------------\033[0m" << endl;
 		}
 		return sePuedeReservar;
     }
 
-	bool verificarHabitacion(int numHabitacion)
+	bool verificarHabitacion(int numHabitacion) // metodo para verificar si la habitacion ya existe
 	{
-		for (int i = 0; i < ListaHabitaciones.size(); i++)
+		for (int i = 0; i < ListaHabitaciones.size(); i++) // recorre el vector de habitaciones
 		{
-			if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion)
+			if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion) // si encuentra la habitacion retorna true
 			{
 				return true;
 			}
 		}
-		return false;
+		return false; // si no encuentra la habitacion retorna false
 	}
 
 
@@ -122,63 +135,76 @@ public:
         string descripcion;
         int cantPersonas;
         double precioXnoche;
+        bool encontrada = false;
 
-        if (ListaHabitaciones.empty())
+		if (ListaHabitaciones.empty()) // si no hay habitaciones registradas muestra un mensaje
         {
-            cout << "--------------------------------------------" << endl;
-			cout << " No hay Habitaciones Registradas" << endl;
-			cout << "--------------------------------------------" << endl;
+            cout << "\033[31m--------------------------------------------" << endl;
+            cout << " No hay Habitaciones Registradas" << endl;
+            cout << "--------------------------------------------\033[0m" << endl;
         }
         else
         {
-            for (int i = 0; i < ListaHabitaciones.size(); i++)
+			for (int i = 0; i < ListaHabitaciones.size(); i++) // recorre el vector de habitaciones
             {
-                if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion)
+				if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion)  // si encuentra la habitacion
                 {
+					encontrada = true; // cambia el estado de la variable a true
 
+					// ingresa el numero del piso donde se encuentra la habitacion y verifica que no sea menor a 1. y sale del bucle cuando se
                     cout << "Ingrese el piso: ";
-                    while (!(cin >> piso) || piso < 1) {
+                    while (!(cin >> piso) || piso < 1)
+                    {
                         cout << " Ingrese nuevamente: ";
                         cin.clear();
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer
                     }
 
+					// ingresa la descripcion y verifica que no este vacio. y sale del bucle cuando se cumple la condicion de no ser espacios vacios.
                     cout << "Ingrese la descripcion: ";
                     cin.ignore(); // Limpiar el buffer
                     getline(cin, descripcion);
-                    while (descripcion.empty()) {
+                    while (descripcion.empty()) 
+                    {
                         cout << "Ingrese nuevamente: ";
                         getline(cin, descripcion);
                     }
 
+					// ingresa la cantidad de personas y verifica que no sea menor a 1. y sale del bucle cuando se cumple la condicion de ser mayor a uno.
                     cout << "Ingrese la cantidad de personas: ";
-                    while (!(cin >> cantPersonas) || cantPersonas < 1) {
+                    while (!(cin >> cantPersonas) || cantPersonas < 1)
+                    {
                         cout << "Ingrese nuevamente: ";
                         cin.clear();
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cin.ignore(numeric_limits<streamsize>::max(), '\n');    // Limpiar el buffer
                     }
 
+					// ingresa el precio de la habitacion x noche y verifica que no sea menor a 1.
+                    // y sale del bucle cuando se cumple la condicion de ser mayor a uno.
                     cout << "Ingrese el precio por noche: ";
-                    while (!(cin >> precioXnoche) || precioXnoche < 1) {
+                    while (!(cin >> precioXnoche) || precioXnoche < 1) 
+                    {
                         cout << "Ingrese nuevamente: ";
                         cin.clear();
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+						cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer
                     }
-                    ListaHabitaciones[i].setActualizarHabitacion(piso, descripcion, cantPersonas, precioXnoche);
-					cout << "---------------------------------------------------" << endl;
-					cout << "Habitacion actualizada con exito!!!" << endl;
-					cout << "---------------------------------------------------" << endl;
-					ListaHabitaciones[i].getDatosHabitacion();
+					ListaHabitaciones[i].setActualizarHabitacion(piso, descripcion, cantPersonas, precioXnoche); // actualiza los datos de la habitacion
+                    cout << "\033[32m---------------------------------------------------" << endl;
+                    cout << "Habitacion actualizada con exito!!!" << endl;
+                    cout << "---------------------------------------------------\033[0m" << endl; 
+
+					ListaHabitaciones[i].getDatosHabitacion(); // muestra los datos de la habitacion
 					break;
 				}
-                else
-                {
-                    cout << "--------------------------------------------" << endl;
-                    cout << "Huesped no encontrado" << endl;
-                    cout << "--------------------------------------------" << endl;
-                }
+                
             
            
+            }
+			if (!encontrada) // si no encuentra la habitacion muestra un mensaje
+            {
+                cout << "\033[31m--------------------------------------------" << endl;
+                cout << " La habitacion no existe !!! ..." << endl;
+                cout << "--------------------------------------------\033[0m" << endl;
             }
 
         }
@@ -187,35 +213,35 @@ public:
 
     }
 
-	void ConsultarHabitaciones()
+	void ConsultarHabitaciones() // metodo para consultar las habitaciones
 	{
 		system("cls");
-        if (ListaHabitaciones.empty())
+		if (ListaHabitaciones.empty()) // si no hay habitaciones registradas muestra un mensaje
         {
-            cout << "--------------------------------------------" << endl;
-			cout << " No hay Habitaciones Registradas" << endl;
-            cout << "--------------------------------------------" << endl;
+            cout << "\033[31m--------------------------------------------" << endl;
+            cout << " No hay Habitaciones Registradas" << endl;
+            cout << "--------------------------------------------\033[0m" << endl;
         }
         else
         {
-            int totalHabitaciones = ListaHabitaciones.size();
-            int totalHabitacionesDisponibles = 0;
+			int totalHabitaciones = ListaHabitaciones.size(); // total de habitaciones
+			int totalHabitacionesDisponibles = 0; // total de habitaciones disponibles iniciado en cero, para extraer datos de cada ingreso
 
             cout << "------------|  Lista Habitaciones  |------------" << endl;
-            for (int i = 0; i < ListaHabitaciones.size(); i++)
+			for (int i = 0; i < ListaHabitaciones.size(); i++) // recorre el vector de habitaciones
             {
 
-                ListaHabitaciones[i].getDatosHabitacion();
+				ListaHabitaciones[i].getDatosHabitacion(); // muestra los datos de la habitacion
 
-                if (ListaHabitaciones[i].getEstado())
+				if (ListaHabitaciones[i].getEstado()) // si la habitacion esta disponible suma 1 al total de habitaciones disponibles
                 {
-                    totalHabitacionesDisponibles++;
+					totalHabitacionesDisponibles++; // suma 1 al total de habitaciones disponibles
                 }
                 
             }
             cout << "--------------------------------------------" << endl;
-            cout << "Total de habitaciones: " << totalHabitaciones << endl;
-            cout << "Total de habitaciones disponibles: " << totalHabitacionesDisponibles << endl;
+			cout << "Total de habitaciones: " << totalHabitaciones << endl; // muestra el total de habitaciones
+			cout << "Total de habitaciones disponibles: " << totalHabitacionesDisponibles << endl; // muestra el total de habitaciones disponibles
             cout << "--------------------------------------------" << endl;
         }
 
@@ -226,7 +252,7 @@ public:
         if (ListaHabitaciones.empty())
         {
 			cout << "--------------------------------------------" << endl;
-			cout << "No hay Habitaciones Registradas !!!" << endl;
+            cout << "\033[31mNo hay Habitaciones Registradas !!!\033[0m" << endl;
 			cout << "--------------------------------------------" << endl;
 		}
         else
@@ -244,7 +270,7 @@ public:
                 }
                 archivo.close();
                 cout << "----------------------------------------------------------------" << endl;
-                cout << "Lista de Habitaciones almacenados en el archivo correctamente..." << endl;
+                cout << "\033[32mLista de Habitaciones almacenados en el archivo correctamente...\033[0m" << endl;
                 cout << "----------------------------------------------------------------" << endl;
             }
         }
@@ -281,50 +307,77 @@ public:
            }
            archivo.close();
            cout << "----------------------------------------------------------------" << endl;
-           cout << "Lista de Habitaciones cargados desde el archivo correctamente..." << endl;
+           cout << "\033[32mLista de Habitaciones cargados desde el archivo correctamente...\033[0m" << endl;
            cout << "----------------------------------------------------------------" << endl;
 
        }
         
     }
 
-    void ConsultarEstadoHabitacion()
+	void ConsultarEstadoHabitacion() // metodo para consultar el estado de la habitacion
     {
 
         int numHabitacion;
+		// ingresa el numero de la habitacion y verifica que no sea menor a 1. y sale del bucle cuando se cumple la condicion de ser mayor a uno.
 		cout << "Ingrese el numero de habitacion: ";
-		while (!(cin >> numHabitacion) || numHabitacion < 1) {
+		while (!(cin >> numHabitacion) || numHabitacion < 1) 
+        {
 			cout << "Ingrese nuevamente: ";
 			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el buffer
 		}
 
-        if (ListaHabitaciones.empty())
+		if (ListaHabitaciones.empty()) // si no hay habitaciones registradas muestra un mensaje
         {
-            cout << "--------------------------------------------" << endl;
+            cout << "\033[31m--------------------------------------------" << endl;
             cout << " No hay Habitaciones Registradas" << endl;
-            cout << "--------------------------------------------" << endl;
+            cout << "--------------------------------------------\033[0m" << endl;
             return;
 
         }
 		else
 		{
-			for (int i = 0; i < ListaHabitaciones.size(); i++)
+			for (int i = 0; i < ListaHabitaciones.size(); i++) // recorre el vector de habitaciones
 			{
-				if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion)
+				if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion) // si encuentra la habitacion muestra los datos de la habitacion
 				{
 					
-					ListaHabitaciones[i].getDatosHabitacion();
+					ListaHabitaciones[i].getDatosHabitacion(); // muestra los datos de la habitacion
 					
 					return;
 				}
 			}
-			cout << "--------------------------------------------" << endl;
-			cout << "La habitacion no existe !!!" << endl;
-			cout << "--------------------------------------------" << endl;
+			cout << "\033[31m--------------------------------------------" << endl; // si no encuentra la habitacion muestra un mensaje
+            cout << "La habitacion no existe !!!" << endl;
+            cout << "--------------------------------------------\033[0m" << endl;
 		}
     }
 
+	void actualizarEstadoHabitacion(int numHabitacion, bool estado)  // metodo para actualizar el estado de la habitacion
+	{
+		for (int i = 0; i < ListaHabitaciones.size(); i++) // recorre el vector de habitaciones
+		{
+			if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion) // si encuentra la habitacion actualiza el estado
+			{
+				ListaHabitaciones[i].setEstado(estado); // actualiza el estado de la habitacion
+			}
+		}
+	}
+
+    // metodo para verificar la disponibilidad de una habitación
+    bool verificarDisponibilidad(int codHabitacion) 
+    {
+        // recorre la lista de habitaciones para encontrar la habitacion con el codigo dado
+        for (int i = 0; i < ListaHabitaciones.size();i++) 
+        {
+            if (ListaHabitaciones[i].getNumeroHabitacion() == codHabitacion) 
+            {
+                return ListaHabitaciones[i].getEstado(); // retorna el metodo en valor true si la habitacion esta disponible
+            }
+        }
+        // Si no se encuentra la habitacion, retorna false
+        return false;
+    }
 
 
 	//menu de habitaciones
@@ -410,7 +463,7 @@ public:
             {
 				system("cls");
                 cout << "-----------------------------------" << endl;
-                cout << "Regresando al Menu principal......." << endl;
+                cout << "\033[32mRegresando al Menu principal.......\033[0m" << endl;
 				cout << "-----------------------------------" << endl;
                 break;
             }

@@ -39,7 +39,7 @@ public:
 		cout << "Descripcion:          " << Descripcion << endl;
 		cout << "Cantidad de personas: " << CantidadPersonas << endl;
 		cout << "Precio por noche:     " << PrecioXnoche << endl;
-		cout << "Estado:               " << (Estado ? "Disponible" : "Ocupado") << endl;
+        cout << "Estado:               " << (Estado ? "\033[32mDisponible\033[0m" : "\033[31mOcupada\033[0m") << endl;
 		cout << "--------------------------------------------" << endl;
 
 	}

@@ -18,6 +18,7 @@ public:
         int Telefono;
         string Correo;
 
+		// Ingresar la cedula de huesped y el while valida que sea un numero y que tenga 10 digitos maximo
         cout << "Ingrese la cedula del huesped ( Incluir ceros): ";
         while (!(cin >> Cedula) || Cedula < 1 || Cedula > 9999999999) {
             cout << "Ingrese nuevamente la Cedula ( Incluir ceros ): ";
@@ -25,6 +26,7 @@ public:
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
 
+		// ingresa el nombre y el while valida que no este vacio
         cout << "Ingrese el nombre del huesped: ";
         cin.ignore(); // Limpiar el buffer
         getline(cin, Nombre);
@@ -32,42 +34,45 @@ public:
             cout << "Ingrese nuevamente el Nombre: ";
             getline(cin, Nombre);
         }
-
+        // ingresa el nombre y el while valida que no este vacio
         cout << "Ingrese los apellidos del huesped: ";
         getline(cin, Apellido);
         while (Apellido.empty()) {
             cout << "Ingrese nuevamente el Apellido: ";
             getline(cin, Apellido);
         }
-
+		// ingresa el telefono y el while valida que sea un numero y que tenga 8 digitos como minimo - maximo
         cout << "Ingrese el telefono del huesped (8 digitos): ";
-        while (!(cin >> Telefono) || Telefono < 10000000 || Telefono > 99999999) {
+		while (!(cin >> Telefono) || Telefono < 10000000 || Telefono > 99999999) // permite  solo 8 digitos y sale del bucle cuando se cumple
+        {
             cout << "Ingrese nuevamente el Numero de Telefono (8 digitos): ";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-
+		// ingresa el correo y el while valida que no este vacio el dato ingresado
         cout << "Ingrese el correo del huesped: ";
         cin.ignore(); // Limpiar el buffer
         getline(cin, Correo);
-        while (Correo.empty()) {
+		while (Correo.empty()) // valida que no este vacio el dato ingresado
+        {
             cout << "Ingrese nuevamente el Correo: ";
             getline(cin, Correo);
         }
-
+		// verifica si la cedula ya esta registrada
         if (!verificarCedula(Cedula))
         {
-            Huesped huesped(Cedula, Nombre, Apellido, Telefono, Correo);
-            ListaHuespedes.push_back(huesped);
-            cout << "---------------------------------------------------" << endl;
-            cout << "Huesped registrado con exito  !!!" << endl;
-            cout << "---------------------------------------------------" << endl;
+			Huesped huesped(Cedula, Nombre, Apellido, Telefono, Correo); // crea un objeto huesped con los datos ingresados
+			ListaHuespedes.push_back(huesped); // agrega el objeto huesped a la lista de huespedes
+
+            cout << "\033[32m---------------------------------------------------\033[0m" << endl;
+            cout << "\033[32mHuesped registrado con exito  !!!\033[0m" << endl;
+            cout << "\033[32m---------------------------------------------------\033[0m" << endl;
         }
         else
         {
-            cout << "---------------------------------------------------" << endl;
-            cout << "La cedula ya se encuentra registrada   !!!" << endl;
-            cout << "---------------------------------------------------" << endl;
+            cout << "\033[---------------------------------------------------\033[0m" << endl;
+            cout << "\033[31m La cedula ya se encuentra registrada   !!! \033[0m" << endl;
+            cout << "\033[---------------------------------------------------\033[0m" << endl;
 
         }
         // Mostrar la lista de huespedes después de registrar uno nuevo
@@ -83,26 +88,26 @@ public:
     bool validarHuesped(int idHuesped) //validar en el check in
     {
         bool existeHuesped = false;
-        for (int i = 0; i < ListaHuespedes.size(); i++)
+		for (int i = 0; i < ListaHuespedes.size(); i++) // recorre la lista de huespedes
         {
-            if (ListaHuespedes[i].getCedula() == idHuesped)
+			if (ListaHuespedes[i].getCedula() == idHuesped) // verifica si la cedula ingresada coincide con alguna de la lista
             {
-                cout << "---------------------------------------------------" << endl;
-                cout << "El huesped se encuentra registrado!!!" << endl;
-                cout << "---------------------------------------------------" << endl;
+                cout << "\033[32m---------------------------------------------------\033[0m" << endl;
+                cout << "\033[32mEl huesped se encuentra registrado!!!\033[0m" << endl;
+                cout << "\033[32m---------------------------------------------------\033[0m" << endl;
                 existeHuesped = true;
             }
         }
-        if (!existeHuesped)
+		if (!existeHuesped) // si no se encuentra el huesped
         {
-            cout << "---------------------------------------------------" << endl;
-            cout << "El huesped no se encuentra registrado o no existe!!! " << endl;
-            cout << "---------------------------------------------------" << endl;
+            cout << "\033[31m---------------------------------------------------\033[0m" << endl;
+            cout << "\033[31mEl huesped no se encuentra registrado o no existe!!!\033[0m" << endl;
+            cout << "\033[31m---------------------------------------------------\033[0m" << endl;
         }
         return existeHuesped;
     }
 
-    bool verificarCedula(int _cedula)
+	bool verificarCedula(int _cedula) // verifica si la cedula ya esta registrada
     {
         for (int i = 0; i < ListaHuespedes.size(); i++)
         {
@@ -120,64 +125,78 @@ public:
         string Apellido;
         int Telefono;
         string Correo;
+        bool encontrado = false;
 
-        if (ListaHuespedes.empty())
+		if (ListaHuespedes.empty()) // si la lista de huespedes esta vacia
         {
-            cout << "--------------------------------------------" << endl;
-            cout << " No hay Huespedes Registrados" << endl;
-            cout << "--------------------------------------------" << endl;
+            cout << "\033[31m--------------------------------------------\033[0m" << endl;
+            cout << "\033[31m No hay Huespedes Registrados\033[0m" << endl;
+            cout << "\033[31m--------------------------------------------\033[0m" << endl;
         }
         else
         {
-			for (int i = 0; i < ListaHuespedes.size(); i++)
+			for (int i = 0; i < ListaHuespedes.size(); i++) // recorre la lista de huespedes
 			{
-				if (ListaHuespedes[i].getCedula() == _cedula)
-				{
-					
-					cout << "Ingrese el nombre del huesped: ";
-					cin.ignore(); // Limpiar el buffer
-					getline(cin, Nombre);
-					while (Nombre.empty()) {
-						cout << "Ingrese nuevamente el Nombre: ";
-						getline(cin, Nombre);
-					}
+                
 
-					cout << "Ingrese el apellido del huesped: ";
-					getline(cin, Apellido);
-					while (Apellido.empty()) {
-						cout << "Ingrese nuevamente el Apellido: ";
-						getline(cin, Apellido);
-					}
+				if (ListaHuespedes[i].getCedula() == _cedula) // verifica si la cedula ingresada coincide con alguna de la lista y si es asi modifica los datos
+                {
+                    encontrado = true;
 
-					cout << "Ingrese el telefono del huesped (8 digitos): ";
-					while (!(cin >> Telefono) || Telefono < 10000000 || Telefono > 99999999) {
-						cout << "Ingrese nuevamente el Numero de Telefono (8 digitos): ";
-						cin.clear();
-						cin.ignore(numeric_limits<streamsize>::max(), '\n');
-					}
+					// ingresa el nombre del huesped y el bucle while no deja que el dato este vacio
+                    cout << "Ingrese el nombre del huesped: ";
+                    cin.ignore(); // Limpiar el buffer
+                    getline(cin, Nombre);
+                    while (Nombre.empty()) 
+                    {
+                        cout << "Ingrese nuevamente el Nombre: ";
+                        getline(cin, Nombre);
+                    }
 
-					cout << "Ingrese el correo del huesped: ";
-					cin.ignore(); // Limpiar el buffer
-					getline(cin, Correo);
-					while (Correo.empty()) {
-						cout << "Ingrese nuevamente el Correo: ";
-						getline(cin, Correo);
-					}
+					// ingresa el apellido del huesped y el bucle while no deja que el dato este vacio
+                    cout << "Ingrese el apellido del huesped: ";
+                    getline(cin, Apellido);
+                    while (Apellido.empty()) 
+                    {
+                        cout << "Ingrese nuevamente el Apellido: ";
+                        getline(cin, Apellido);
+                    }
 
-					ListaHuespedes[i].setActualizarHuesped(Nombre, Apellido, Telefono, Correo);
-					cout << "--------------------------------------------" << endl;
-					cout << "Huesped modificado con exito  !!!" << endl;
-					cout << "--------------------------------------------" << endl;
-					ListaHuespedes[i].getDatosHuesped();
-					break;
-				}
-				else
-				{
-					cout << "--------------------------------------------" << endl;
-					cout << "Huesped no encontrado" << endl;
-					cout << "--------------------------------------------" << endl;
-				}
+					// ingresa el telefono del huesped y el bucle while no permite que sea menor ni mayor a 8 digitos
+                    cout << "Ingrese el telefono del huesped (8 digitos): ";
+                    while (!(cin >> Telefono) || Telefono < 10000000 || Telefono > 99999999) {
+                        cout << "Ingrese nuevamente el Numero de Telefono (8 digitos): ";
+                        cin.clear();
+						cin.ignore(numeric_limits<streamsize>::max(), '\n'); // limpia el buffer
+                    }
+
+					// ingresa el correo del huesped y el bucle while no deja que el dato este vacio
+                    cout << "Ingrese el correo del huesped: ";
+                    cin.ignore(); // Limpiar el buffer
+                    getline(cin, Correo);
+                    while (Correo.empty()) {
+                        cout << "Ingrese nuevamente el Correo: ";
+                        getline(cin, Correo);
+                    }
+
+					ListaHuespedes[i].setActualizarHuesped(Nombre, Apellido, Telefono, Correo); // actualiza los datos del huesped
+                    cout << "\033[32m--------------------------------------------\033[0m" << endl;
+                    cout << "\033[32mHuesped modificado con exito  !!!\033[0m" << endl;
+                    cout << "\033[32m--------------------------------------------\033[0m" << endl;
+
+					ListaHuespedes[i].getDatosHuesped();    // muestra los datos del huesped modificado
+                    break;
+                }
+                
+				
 			}
+			if (!encontrado) // si no se encuentra el huesped
+            {
+                cout << "\033[31m--------------------------------------------\033[0m" << endl;
+                cout << "\033[31mHabitacion no encontrada\033[0m" << endl;
+                cout << "\033[31m--------------------------------------------\033[0m" << endl;
+
+            }
             
 
         }
@@ -186,34 +205,38 @@ public:
        
     }
 
-	void ConsultarHuesped(int _cedula)
+	void ConsultarHuesped(int _cedula) // consulta los datos de un huesped por su numero de cedula
 	{
+        bool encontrado = false;
 		int cantidadHuespedes = ListaHuespedes.size();
 
-		if (ListaHuespedes.empty())
+		if (ListaHuespedes.empty()) // si la lista de huespedes esta vacia
 		{
-			cout << "--------------------------------------------" << endl;
-			cout << " No hay Huespedes Registrados" << endl;
-			cout << "--------------------------------------------" << endl;
+            cout << "\033[31m--------------------------------------------\033[0m" << endl;
+            cout << "\033[31m No hay Huespedes Registrados\033[0m" << endl;
+            cout << "\033[31m--------------------------------------------\033[0m" << endl;
 		}
 		else
 		{
-			for (int i = 0; i < ListaHuespedes.size(); i++)
+			for (int i = 0; i < ListaHuespedes.size(); i++) // recorre la lista de huespedes
 			{
-				if (ListaHuespedes[i].getCedula() == _cedula)
+				if (ListaHuespedes[i].getCedula() == _cedula) // verifica si la cedula ingresada coincide con alguna de la lista y si es asi muestra los datos
 				{
-					ListaHuespedes[i].getDatosHuesped();
+					encontrado = true; //   si se encuentra el huesped
+
+					ListaHuespedes[i].getDatosHuesped(); // muestra los datos del huesped
 					break;
 				}
-				else
-				{
-					cout << "--------------------------------------------" << endl;
-					cout << "Huesped no encontrado" << endl;
-					cout << "--------------------------------------------" << endl;
-				}
+				
 			}
+			if (!encontrado) // si no se encuentra el huesped
+            {
+                cout << "\033[31m--------------------------------------------\033[0m" << endl;
+                cout << "\033[31mHuesped no encontrado\033[0m" << endl;
+                cout << "\033[31m--------------------------------------------\033[0m" << endl;
+            }
 		}
-		cout << "--------------------------------------------" << endl;
+		cout << "--------------------------------------------" << endl; // muestra la cantidad de huespedes registrados
 		cout << "Cantidad de Huespedes Registrados: " << cantidadHuespedes << endl;
 		cout << "--------------------------------------------" << endl;
 	}
@@ -223,7 +246,7 @@ public:
         if (ListaHuespedes.empty())
         {
             cout << "--------------------------------------------" << endl;
-            cout << "No hay Huespedes Registrados !!!" << endl;
+            cout << "\033[31mNo hay Huespedes Registrados !!!\033[0m" << endl;
             cout << "--------------------------------------------" << endl;
         }
         else
@@ -241,7 +264,7 @@ public:
                 }
                 archivo.close();
                 cout << "----------------------------------------------------------------" << endl;
-                cout << "Lista de Huespedes almacenados en el archivo correctamente..." << endl;
+                cout << "\033[32mLista de Huespedes almacenados en el archivo correctamente...\033[0m" << endl;
                 cout << "----------------------------------------------------------------" << endl;
             }
         }
@@ -279,13 +302,15 @@ public:
             }
             archivo.close();
             cout << "----------------------------------------------------------------" << endl;
-            cout << "Lista de Huespedes cargados desde el archivo correctamente..." << endl;
+            cout << "\033[32mLista de Huespedes cargados desde el archivo correctamente...\033[0m" << endl;
             cout << "----------------------------------------------------------------" << endl;
 
         }
         
 
 	}  
+
+
 
     void menuHuespedes()
     {
@@ -369,7 +394,7 @@ public:
             {
                 system("cls");
                 cout << "-----------------------------------" << endl;
-                cout << "Regresando al Menu principal......." << endl;
+                cout << "\033[32mRegresando al Menu principal.......\033[0m" << endl;
                 cout << "-----------------------------------" << endl;
                 break;
             }
