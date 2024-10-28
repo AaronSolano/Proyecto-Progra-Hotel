@@ -2,6 +2,7 @@
 #include "Contenedor Habitaciones.h"
 #include "Contenedor Huespedes.h"
 #include "Check-in.h"
+#include "ContenedorCheckOut.h"
 
 
 
@@ -13,7 +14,8 @@ int main()
 	
 	ContenedorHabitaciones contenedorHabitaciones;
 	ContenedorHuespedes contenedorHuespedes;
-	contenedorCheckIn checkin(contenedorHabitaciones, contenedorHuespedes);
+	ContenedorCheckIn ContenedorCheckin(contenedorHabitaciones, contenedorHuespedes);
+    ContenedorCheckOut checkOut (ContenedorCheckin);
 
     char opcion;
 
@@ -49,7 +51,7 @@ int main()
             }
             case '3':
             {
-                checkin.menucheckIn();
+                ContenedorCheckin.menucheckIn();
 
                 system("pause");
                 break;

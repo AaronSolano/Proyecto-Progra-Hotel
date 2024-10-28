@@ -7,11 +7,11 @@ private:
 	int cedHuesped;
 	int codHabitacion;
 	string fechaCheckIn;
-	bool estado;
+	bool estado = true;
 	int consecutivo;
 
 public:
-	CheckIn(int _cedHuesped, int _codHabitacion, string _fechaCheckIn, bool _estado, int _consecutivo)
+	CheckIn(int _cedHuesped, int _codHabitacion, string _fechaCheckIn, int _consecutivo, bool _estado)
 	{
 		this->cedHuesped = _cedHuesped;
 		this->codHabitacion = _codHabitacion;
@@ -31,10 +31,11 @@ public:
     {
 		cout << "-------------------------------------------------" << endl;
 		cout << "Consecutivo:             #" << consecutivo << endl;
+        cout << "-------------------------------------------------" << endl;
 		cout << "Cedula del Huesped:       " << cedHuesped << endl;
 		cout << "Numero de Habitacion:     " << codHabitacion << endl;
 		cout << "Fecha Ingreso:            " << fechaCheckIn << endl;
-		cout << "Estado:                   " << (estado ? "\033[33mPendiente\033[0m" : "\033[32mProcesado\033[0m") << endl;
+		cout << "Estado:                   " << (estado ? "\033[33m Pendiente \033[0m" : "\033[32mProcesado\033[0m") << endl;
 		cout << "-------------------------------------------------" << endl;
 
 
@@ -70,7 +71,7 @@ public:
 };
 
 
-    class contenedorCheckIn
+    class ContenedorCheckIn
     {
     private:
         vector<CheckIn> listaCheckIn;
@@ -80,7 +81,7 @@ public:
 
     public:
 
-        contenedorCheckIn(ContenedorHabitaciones& contenedorHabitacion, ContenedorHuespedes& contenedorHuesped)
+        ContenedorCheckIn(ContenedorHabitaciones& contenedorHabitacion, ContenedorHuespedes& contenedorHuesped)
         {
 			this->contenedorHabitacion = &contenedorHabitacion; // se acceden a los datos por medio de puntos,
             this->contenedorHuesped = &contenedorHuesped;       //trayendo los datos de sus clases correspodientes
@@ -204,17 +205,19 @@ public:
 
            
 			// ingreso de la fecha de check-in
-            cout << "Ingrese la fecha de Check-In: ";
+            cout << "Ingrese la fecha de Check-In (dd/mm/yyyy): ";
             cin >> fechaCheckIn;
 
 			//  |   Verificar si la habitación y el huésped son válidos por medio de punteros,   | 
 			//  v   y si lo son los agrega al vector lista check in.                             v
             if (contenedorHabitacion->validarHabitacionReserva(codHabitacion) && contenedorHuesped->validarHuesped(cedHuesped))
             {
-                CheckIn nuevoCheckIn(cedHuesped, codHabitacion, fechaCheckIn, estado, contadorConsecutivo++);
+                CheckIn nuevoCheckIn(cedHuesped, codHabitacion, fechaCheckIn, contadorConsecutivo++, estado);
                 listaCheckIn.push_back(nuevoCheckIn);
+                
 
 				contenedorHabitacion->actualizarEstadoHabitacion(codHabitacion, false); // cambia el estado de la habitacion por medio de su metodo, que accede a la habitacion
+                
                 cout << "---------------------------------------------------" << endl;
                 cout << "\033[1;32mCheck-In realizado con éxito, Consecutivo: " << nuevoCheckIn.getConsecutivo() << "\033[0m" << endl;
                 cout << "---------------------------------------------------" << endl;
@@ -246,31 +249,71 @@ public:
             cout << "-------------------------------------------------" << endl;
         }
 
-        // Modificar un Check-In existente
-        /*void modificarCheckIn()
-        {
-            int consecutivo;
-            bool nuevoEstado;
-            cout << "Ingrese el número de consecutivo del Check-In a modificar: ";
-            cin >> consecutivo;
-            cout << "Ingrese el nuevo estado (0 = Procesado, 1 = Pendiente): ";
-            cin >> nuevoEstado;
 
-            for (int i = 0; i < listaCheckIn.size(); i++)
-            {
-                if (listaCheckIn[i].getConsecutivo() == consecutivo)
-                {
-                    listaCheckIn[i].setActualizarCheckIn(listaCheckIn[i].getCedHuesped(), listaCheckIn[i].getCodHabitacion(), listaCheckIn[i].getFechaCheckIn(), nuevoEstado);
-                    cout << "-------------------------------------------------" << endl;
-                    cout << "\033[1;32mCheck-In modificado con exito.\033[0m" << endl;
-                    cout << "-------------------------------------------------" << endl;
-                    return;
-                }
-            }
-            cout << "-------------------------------------------------" << endl;
-            cout << "\033[1;31mCheck-In no encontrado.\033[0m" << endl;
-            cout << "-------------------------------------------------" << endl;
-        }*/
+        //metodo para modificar un check in existente
+        //void modificarCheckIn()
+        //{
+        //    int consecutivo, habitacion;
+        //    string fechaCheckIn;
+        //    bool encontrado = false;
+        //    cout << "Ingrese el numero de consecutivo a modificar: " << endl;
+        //    cin >> consecutivo;
+        //    if (listaCheckIn.empty())
+        //    {
+        //        cout << "---------------------------------------------------" << endl;
+        //        cout << "\033[1;31mNo hay Check-Ins registrados.\033[0m" << endl;
+        //        cout << "---------------------------------------------------" << endl;
+        //        return;
+        //    }
+
+        //    for (int i = 0; i < listaCheckIn.size(); i++)
+        //    {
+        //        if (listaCheckIn[i].getConsecutivo() == consecutivo)
+        //        {
+        //            encontrado = true;
+
+        //            cout << "-------------------------------------------------" << endl;
+        //            cout << "\033[1;33mIngrese los nuevos datos:\033[0m" << endl;
+        //          
+        //            cout << "Numero de la habitacion: ";
+        //            while (!(cin >> habitacion) || habitacion < 1)
+        //            {
+        //                cout << "Ingrese nuevamente: ";
+        //                cin.clear();
+        //                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        //            }
+
+        //            if (!contenedorHabitacion->validarHabitacionReserva(habitacion))
+        //            {
+        //                cout << "\033[1;31mLa habitacion no se encuentra registrada.\033[0m" << endl;
+        //                return;
+        //            }
+
+        //            cout << "Fecha de Check-In: ";
+        //            cin.ignore();
+        //            getline(cin, fechaCheckIn);
+
+        //            listaCheckIn[i].setActualizarCheckIn(listaCheckIn[i].getCedHuesped(), habitacion, fechaCheckIn, listaCheckIn[i].getEstado());
+        //            contenedorHabitacion->actualizarEstadoHabitacion(habitacion, false); // cambia el estado de la habitacion por medio de su metodo, que accede a la habitacion
+        //            cout << "-------------------------------------------------" << endl;
+        //            cout << "\033[1;32mCheck-In modificado con exito.\033[0m" << endl;
+        //            cout << "-------------------------------------------------" << endl;
+        //            return;
+
+        //        }
+
+        //    }
+
+        //    if (!encontrado)
+        //    {
+        //        cout << "-------------------------------------------------" << endl;
+        //        cout << "\033[1;31mCheck-In no encontrado.\033[0m" << endl;
+        //        cout << "-------------------------------------------------" << endl;
+        //    }
+        //}
+       
+
+
 
        // Cargar los Check-Ins desde un archivo 
         void RecuperarContenedor()
@@ -282,19 +325,19 @@ public:
             while (getline(archivo, linea)) 
             {
                 stringstream ss(linea); 
-                string cedHuespedStr, codHabitacionStr, fechaCheckIn, estadoStr, consecutivoStr;
+                string cedHuespedStr, codHabitacionStr, fechaCheckIn, consecutivoStr, estadoStr;
 
                 // Leer los valores separados por comas
                 getline(ss, cedHuespedStr, '-');
                 getline(ss, codHabitacionStr, '-');
                 getline(ss, fechaCheckIn, '-');
-                getline(ss, estadoStr, '-');
-                getline(ss, consecutivoStr);
+                getline(ss, consecutivoStr, '-');
+                getline(ss, estadoStr);
 
                 // Convertir los datos a los tipos correctos
                 int cedHuesped = stoi(cedHuespedStr);
                 int codHabitacion = stoi(codHabitacionStr);
-                bool estado = (estadoStr == "true");
+                bool estado = (estadoStr == "Pendiente");
                 int consecutivo = stoi(consecutivoStr);
                 // Actualizar el último consecutivo leído
 
@@ -302,13 +345,15 @@ public:
                     ultimoConsecutivo = consecutivo;
 
                 // Crear un nuevo objeto CheckIn y agregarlo a la lista
-                CheckIn checkIn(cedHuesped, codHabitacion, fechaCheckIn, estado, consecutivo);
+                CheckIn checkIn(cedHuesped, codHabitacion, fechaCheckIn,consecutivo, estado);
                 listaCheckIn.push_back(checkIn);
             }
             archivo.close();
 
             // Establecer el contadorConsecutivo al valor siguiente del último consecutivo leído
             contadorConsecutivo = ultimoConsecutivo + 1;
+
+			contenedorHabitacion->RecuperarDatos();
 
             cout << "---------------------------------------------------" << endl;
             cout << "\033[1;32mDatos cargados desde el archivo con exito.\033[0m" << endl;
@@ -328,13 +373,15 @@ public:
 
             for (int i = 0; i < listaCheckIn.size(); i++)
             {
-                archivo << listaCheckIn[i].getCedHuesped() << " - ";
-				archivo << listaCheckIn[i].getCodHabitacion() << " - ";
-				archivo << listaCheckIn[i].getFechaCheckIn() << " - ";
-				archivo << listaCheckIn[i].getEstado() << " - ";
-				archivo << listaCheckIn[i].getConsecutivo() << endl;
+                archivo << listaCheckIn[i].getCedHuesped() << "-" <<
+                    listaCheckIn[i].getCodHabitacion() << "-" <<
+                    listaCheckIn[i].getFechaCheckIn() << "-" <<
+                    listaCheckIn[i].getConsecutivo() << "-" <<
+                    (listaCheckIn[i].getEstado() ? "Pendiente" : "Procesado")
+                    << endl;
 			}
             archivo.close();
+			contenedorHabitacion->guardarContenedor();
             cout << "--------------------------------------------" << endl;
             cout << "\033[1;32mDatos guardados en el archivo con exito.\033[0m" << endl;
             cout << "--------------------------------------------" << endl;
@@ -350,10 +397,9 @@ public:
                 cout << "*********| Menu Check-In |**********" << endl;
                 cout << "* 1- Realizar Check-In de una habitacion      *" << endl;
                 cout << "* 2- Consultar todos los Check-Ins            *" << endl;
-                cout << "* 3- Modificar un Check-In                    *" << endl;
-                cout << "* 4- Guardar contenedor                       *" << endl;
-                cout << "* 5- Recuperar datos del archivo              *" << endl;
-                cout << "* 6- Regresar a menú principal                *" << endl;
+                cout << "* 3- Guardar contenedor en archivo            *" << endl;
+                cout << "* 4- Recuperar datos del archivo              *" << endl;
+                cout << "* 5- Regresar a menú principal                *" << endl;
                 cout << "****************************************" << endl;
                 cout << "Ingrese una opcion: ";
                 cin >> opcion;
@@ -376,30 +422,22 @@ public:
                     system("pause");
                     break;
                 }
+                
                 case '3':
                 {
-                    system("cls");
-                    /*modificarCheckIn();*/
-
-                    system("pause");
-                    break;
-                }
-                case '4':
-                {
-
                     system("cls");
                     GuardarContenedor();
                     system("pause");
                     break;
                 }
-                case '5':
+                case '4':
                 {
                     system("cls");
                     RecuperarContenedor();
                     system("pause");
                     break;
                 }
-                case '6':
+                case '5':
                 {
                     system("cls");
                     cout << "-----------------------------------" << endl;
@@ -415,7 +453,7 @@ public:
                 }
 
                 }
-            } while (opcion != '6');
+            } while (opcion != '5');
 
         }
 

@@ -131,8 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Check-in.h" />
+    <ClInclude Include="CheckOut.h" />
     <ClInclude Include="Contenedor Habitaciones.h" />
     <ClInclude Include="Contenedor Huespedes.h" />
+    <ClInclude Include="ContenedorCheckOut.h" />
     <ClInclude Include="Habitacion.h" />
     <ClInclude Include="Huesped.h" />
     <ClInclude Include="Librerias.h" />

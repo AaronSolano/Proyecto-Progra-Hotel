@@ -13,13 +13,14 @@ private:
 
 public:
 
-	Habitacion(int _numHabitacion, int _piso, string _descripcion, int _cantidaPersonas, double _precioXnoche)
+	Habitacion(int _numHabitacion, int _piso, string _descripcion, int _cantidaPersonas, double _precioXnoche, bool _estado)
 	{
 		this->NumeroHabitacion = _numHabitacion;
 		this->Piso = _piso;
 		this->Descripcion = _descripcion;
 		this->CantidadPersonas = _cantidaPersonas;
 		this->PrecioXnoche = _precioXnoche;
+		this->Estado = _estado;
 	
 	}
 

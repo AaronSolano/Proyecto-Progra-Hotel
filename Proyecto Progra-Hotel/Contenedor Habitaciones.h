@@ -9,13 +9,15 @@ private:
 
 public:
 
+
 	void RegistrarHabitacion()
 	{
-		RecuperarDatos(); // Recuperar datos del archivo antes de registrar una nueva habitación.
+		RecuperarContenedor(); // recolecta los datos guardados en el txt y los carga en la lista de habitaciones antes de registrar una nueva.
 
         int numHabitacion, piso, cantPersonas;
         double precioXnoche;
         string descripcion;
+		bool estado = true;
 
         // ingresa el numero de la habitacion y verifica que no sea menor a 1. y sale del bucle cuando se
         // cumple la condicion de ser mayor a uno.
@@ -66,8 +68,9 @@ public:
 		// Verificar si la habitación ya existe antes de registrarla
         if (!verificarHabitacion(numHabitacion))
         {
+           
 			system("cls");
-			Habitacion nuevaHabitacion(numHabitacion, piso, descripcion, cantPersonas, precioXnoche); // crea un objeto de tipo habitacion
+			Habitacion nuevaHabitacion(numHabitacion, piso, descripcion, cantPersonas, precioXnoche, estado); // crea un objeto de tipo habitacion
 			ListaHabitaciones.push_back(nuevaHabitacion); // agrega la habitacion al vector de habitaciones
             cout << "---------------------------------------------------" << endl;
             cout << "\033[32mHabitacion registrada con exito !!!\033[0m" << endl;
@@ -265,7 +268,8 @@ public:
                         << "-" << ListaHabitaciones[i].getPiso()
                         << "-" << ListaHabitaciones[i].getDescripcion()
                         << "-" << ListaHabitaciones[i].getCantidadPersonas()
-                        << "-" << ListaHabitaciones[i].getEstado()
+						<< "-" << ListaHabitaciones[i].getPrecioXnoche()
+                        << "-" << (ListaHabitaciones[i].getEstado() ? "Disponible" : "Ocupada")
                         << endl;
                 }
                 archivo.close();
@@ -289,7 +293,7 @@ public:
            while (getline(archivo, linea))
            {
                stringstream ss(linea);
-               string numHabitacion, piso, descripcion, cantPersonas, estado;
+               string numHabitacion, piso, descripcion, cantPersonas, precioXnoche, estado;
 
                 getline(ss, numHabitacion, '-');
 
@@ -299,9 +303,23 @@ public:
 
                 getline(ss, cantPersonas, '-');
 
-                getline(ss, estado, '-');
+                getline(ss, precioXnoche, '-');
 
-                 Habitacion nuevaHabitacion(stoi(numHabitacion), stoi(piso), descripcion, stoi(cantPersonas), stod(estado));
+				getline(ss, estado);
+
+				int numHabitacionInt = stoi(numHabitacion);
+				int pisoInt = stoi(piso);
+				int cantPersonasInt = stoi(cantPersonas);
+				double precioXnocheDouble = stod(precioXnoche);
+
+				bool _estado = (estado == "Disponible");
+
+				
+				
+
+
+				Habitacion nuevaHabitacion(numHabitacionInt, pisoInt, descripcion, cantPersonasInt, precioXnocheDouble, _estado); // crea un objeto de tipo habitacion
+
 
                  ListaHabitaciones.push_back(nuevaHabitacion);
            }
