@@ -13,9 +13,18 @@ int main()
 	
 	
 	ContenedorHabitaciones contenedorHabitaciones;
+
+    contenedorHabitaciones.RecuperarDatos();
+
 	ContenedorHuespedes contenedorHuespedes;
+
+	contenedorHuespedes.RecuperarContenedor();
+
 	ContenedorCheckIn ContenedorCheckin(contenedorHabitaciones, contenedorHuespedes);
-    ContenedorCheckOut checkOut (ContenedorCheckin);
+
+    ContenedorCheckin.RecuperarContenedor();
+
+    ContenedorCheckOut checkOut (ContenedorCheckin, contenedorHabitaciones, contenedorHuespedes);
 
     char opcion;
 

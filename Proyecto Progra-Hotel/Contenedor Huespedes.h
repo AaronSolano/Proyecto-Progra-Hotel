@@ -10,7 +10,7 @@ private:
 public:
     void RegistrarHuesped()
     {
-		RecuperarContenedor(); // recolecta los datos guardados en el txt y los carga en la lista de huespedes antes de registrar uno nuevo.
+		
 
         int Cedula;
         string Nombre;

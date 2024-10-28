@@ -12,8 +12,7 @@ public:
 
 	void RegistrarHabitacion()
 	{
-		RecuperarContenedor(); // recolecta los datos guardados en el txt y los carga en la lista de habitaciones antes de registrar una nueva.
-
+		
         int numHabitacion, piso, cantPersonas;
         double precioXnoche;
         string descripcion;
