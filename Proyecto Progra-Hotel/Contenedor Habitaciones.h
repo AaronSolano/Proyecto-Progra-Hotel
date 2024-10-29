@@ -397,6 +397,21 @@ public:
     }
 
 
+    int obtenerprecio(int numHabitacion)
+    {
+        int precio = 0;
+        
+		for (int i = 0; i < ListaHabitaciones.size(); i++)
+		{
+			if (ListaHabitaciones[i].getNumeroHabitacion() == numHabitacion)
+			{
+				precio = ListaHabitaciones[i].getPrecioXnoche();
+			}
+		}
+        return precio;
+    }
+
+
 	//menu de habitaciones
 
     void menuHabitaciones()

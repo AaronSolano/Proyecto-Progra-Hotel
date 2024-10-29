@@ -26,6 +26,8 @@ int main()
 
     ContenedorCheckOut checkOut (ContenedorCheckin, contenedorHabitaciones, contenedorHuespedes);
 
+    checkOut.recuperarDatos();
+
     char opcion;
 
     do
@@ -67,7 +69,8 @@ int main()
             }
             case '4':
             {
-                cout << "   Pronto Estara disponible !!!!!" << endl;
+               /* cout << "   Pronto Estara disponible !!!!!" << endl;*/
+				checkOut.menuCheckOut();
 
                 system("pause");
                 break;

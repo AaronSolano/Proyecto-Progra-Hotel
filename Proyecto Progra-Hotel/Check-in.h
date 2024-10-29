@@ -9,15 +9,17 @@ private:
 	string fechaCheckIn;
 	bool estado = true;
 	int consecutivo;
+	int diasEstadia;
 
 public:
-	CheckIn(int _cedHuesped, int _codHabitacion, string _fechaCheckIn, int _consecutivo, bool _estado)
+	CheckIn(int _cedHuesped, int _codHabitacion, string _fechaCheckIn, int _consecutivo, int _diasEstadia, bool _estado)
 	{
 		this->cedHuesped = _cedHuesped;
 		this->codHabitacion = _codHabitacion;
 		this->fechaCheckIn = _fechaCheckIn;
 		this->estado = _estado;
 		this->consecutivo = _consecutivo;
+		this->diasEstadia = _diasEstadia;
 	}
 	void setActualizarCheckIn(int _cedHuesped, int _codHabitacion, string _fechaCheckIn, bool _estado)
 	{
@@ -35,6 +37,7 @@ public:
 		cout << "Cedula del Huesped:       " << cedHuesped << endl;
 		cout << "Numero de Habitacion:     " << codHabitacion << endl;
 		cout << "Fecha Ingreso:            " << fechaCheckIn << endl;
+		cout << "Dias de Estadia:          " << diasEstadia << endl;
 		cout << "Estado:                   " << (estado ? "\033[33m Pendiente \033[0m" : "\033[32mProcesado\033[0m") << endl;
 		cout << "-------------------------------------------------" << endl;
 
@@ -64,6 +67,11 @@ public:
 	const int getConsecutivo() const
 	{
 		return this->consecutivo;
+	}
+
+	const int getDiasEstadia() const
+	{
+		return this->diasEstadia;
 	}
 
 	void setestadoCheckIn(bool _estado)
@@ -97,14 +105,22 @@ public:
 
         int obtenerNumHabitacion(int numConsecutivo) const
         {
-            for (const auto& checkIn : listaCheckIn)
+            bool encontrado = false;
+            for (int i = 0; i < listaCheckIn.size(); i++)
             {
-                if (checkIn.getConsecutivo() == numConsecutivo)
+                if (listaCheckIn[i].getConsecutivo() == numConsecutivo)
                 {
-                    return checkIn.getCodHabitacion();
+					encontrado = true;
+                    return listaCheckIn[i].getCodHabitacion();
                 }
             }
-            throw std::invalid_argument("Número de consecutivo no encontrado");
+			if (!encontrado)
+			{
+				cout << "\033[1;31mEl numero de consecutivo no existe.\033[0m" << endl;
+				return 0;
+			}
+        
+            
         }
 
 
@@ -114,9 +130,10 @@ public:
         {
            
 
-            int cedHuesped, codHabitacion;
+            int cedHuesped, codHabitacion, diasEstadia;
             string fechaCheckIn;
             bool estado = true;
+           
 
             //  |  Aqui ingresa el numero de cedula del huesped y se valida si cumple en no tener menos   |
 			//  v  de 10 digitos de la cedula                                                             v
@@ -221,6 +238,15 @@ public:
                 }
             }
 
+			cout << "Ingrese la cantidad de días de estadia: ";
+			while (!(cin >> diasEstadia) || diasEstadia < 1)
+			{
+				cout << "Ingrese nuevamente la cantidad de días de estadia: ";
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
+
+
            
 			// ingreso de la fecha de check-in
 			
@@ -242,7 +268,7 @@ public:
 			//  v   y si lo son los agrega al vector lista check in.                             v
             if (contenedorHabitacion->validarHabitacionReserva(codHabitacion) && contenedorHuesped->validarHuesped(cedHuesped))
             {
-                CheckIn nuevoCheckIn(cedHuesped, codHabitacion, fechaCheckIn, contadorConsecutivo++, estado);
+                CheckIn nuevoCheckIn(cedHuesped, codHabitacion, fechaCheckIn, contadorConsecutivo++, diasEstadia,estado);
                 listaCheckIn.push_back(nuevoCheckIn);
                 
 
@@ -290,13 +316,14 @@ public:
             while (getline(archivo, linea)) 
             {
                 stringstream ss(linea); 
-                string cedHuespedStr, codHabitacionStr, fechaCheckIn, consecutivoStr, estadoStr;
+                string cedHuespedStr, codHabitacionStr, fechaCheckIn, consecutivoStr, diasEstadia, estadoStr;
 
                 // Leer los valores separados por comas
                 getline(ss, cedHuespedStr, '-');
                 getline(ss, codHabitacionStr, '-');
                 getline(ss, fechaCheckIn, '-');
                 getline(ss, consecutivoStr, '-');
+				getline(ss, diasEstadia, '-');
                 getline(ss, estadoStr);
 
                 // Convertir los datos a los tipos correctos
@@ -304,13 +331,14 @@ public:
                 int codHabitacion = stoi(codHabitacionStr);
                 bool estado = (estadoStr == "Pendiente");
                 int consecutivo = stoi(consecutivoStr);
+				int _diasEstadia = stoi(diasEstadia);
                 // Actualizar el último consecutivo leído
 
                 if (consecutivo > ultimoConsecutivo)
                     ultimoConsecutivo = consecutivo;
 
                 // Crear un nuevo objeto CheckIn y agregarlo a la lista
-                CheckIn checkIn(cedHuesped, codHabitacion, fechaCheckIn,consecutivo, estado);
+                CheckIn checkIn(cedHuesped, codHabitacion, fechaCheckIn,consecutivo,_diasEstadia ,estado);
                 listaCheckIn.push_back(checkIn);
             }
             archivo.close();
@@ -342,6 +370,7 @@ public:
                     listaCheckIn[i].getCodHabitacion() << "-" <<
                     listaCheckIn[i].getFechaCheckIn() << "-" <<
                     listaCheckIn[i].getConsecutivo() << "-" <<
+					listaCheckIn[i].getDiasEstadia() << "-" <<
                     (listaCheckIn[i].getEstado() ? "Pendiente" : "Procesado")
                     << endl;
 			}
@@ -367,8 +396,6 @@ public:
             return false;
         }
 
-
-
 		void actualizarEstadoCheckIn(int consecutivo, bool estado) // para actualizar el estado del check in por medio del check-Out
         {
 			for (int i = 0; i < listaCheckIn.size(); i++)
@@ -380,6 +407,60 @@ public:
 				}
 			}
 		}
+
+        void FacturaHospedaje(int consecutivo)
+        {
+			int cedulaHuesped;
+            int numeroHabitacion ;
+			int diasEstadia;
+			double precioHabitacion;
+			double totalPagar = 0;
+			double impuesto = 0.13;
+			double servicio = 0.10;
+
+
+
+			
+
+            if (validarConsecutivo(consecutivo))
+            {
+                for (int i = 0; i < listaCheckIn.size(); i++)
+                {
+                    if (listaCheckIn[i].getConsecutivo() == consecutivo)
+                    {
+                        numeroHabitacion = listaCheckIn[i].getCodHabitacion();
+						diasEstadia = listaCheckIn[i].getDiasEstadia();
+						precioHabitacion = contenedorHabitacion->obtenerprecio(numeroHabitacion);
+						cedulaHuesped = listaCheckIn[i].getCedHuesped();
+                    }
+
+                }
+            }
+			else
+			{
+				cout << "\033[1;31mEl consecutivo ingresado no es válido.\033[0m" << endl;
+				return;
+			}
+
+			totalPagar = diasEstadia * precioHabitacion;
+			double totalImpuesto = totalPagar * impuesto;
+			double totalServicio = totalPagar * servicio;
+
+			double totalFinal = totalPagar + totalImpuesto + totalServicio;
+
+
+			cout << "--------------------------------------------------------------------" << endl;
+			cout << "| Consecutivo: " << consecutivo << endl;
+            cout << "--------------------------------------------------------------------" << endl;
+			cout << "| Numero de Habitacion:                                 " << numeroHabitacion << endl;
+			cout << "| Cedula del Huesped:                                   " << cedulaHuesped << endl;
+			cout << "| Dias de Estadia:                                      " << diasEstadia << endl;
+            cout << "| Precio por noche:                                     " << precioHabitacion << " Colones" << endl;
+			cout << "| Precio Total (sin I.V.A):                             " << totalPagar <<       " Colones" << endl;
+			cout << "| Total a pagar (con I.V.A + Servicios):                " << totalFinal <<" Colones" << endl;
+			cout << "--------------------------------------------------------------------" << endl;
+
+        }
 
         void menucheckIn()
         {

@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="checkin.txt" />
+    <Text Include="CheckOut.txt" />
     <Text Include="Habitaciones.txt" />
     <Text Include="Huespedes.txt" />
   </ItemGroup>
